@@ -283,11 +283,12 @@ class ExoPlayerView(private val context: Context) :
             return
         }
 
-        player?.let {
-            if (it.videoSize.width > 0 || it.videoSize.height > 0) {
-                layout.updateVideoAspectRatio(it.videoSize)
+        if (player != null) {
+            if (player!!.videoSize.width > 0 || player!!.videoSize.height > 0) {
+                layout.updateVideoAspectRatio(player!!.videoSize)
+                return
             }
-        } ?: run {
+        } else {
             val groups = tracks.groups
 
             for (group in groups) {

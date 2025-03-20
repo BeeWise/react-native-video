@@ -109,7 +109,10 @@ class AspectRatioFrameLayout(context: Context) : FrameLayout(context) {
         if (videoSize.width == 0 || videoSize.height == 0) {
             videoAspectRatio = 0f
         } else {
-            videoAspectRatio = (videoSize.width.toFloat() * videoSize.pixelWidthHeightRatio) / videoSize.height.toFloat()
+            val aspectRatio = (videoSize.width.toFloat() * videoSize.pixelWidthHeightRatio) / videoSize.height.toFloat()
+            if (videoAspectRatio != aspectRatio) {
+                videoAspectRatio = aspectRatio
+            }
         }
     }
 }
