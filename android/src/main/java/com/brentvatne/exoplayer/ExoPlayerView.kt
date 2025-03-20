@@ -282,18 +282,26 @@ class ExoPlayerView(private val context: Context) :
         if (tracks == null) {
             return
         }
-        val groups = tracks.groups
 
-        for (group in groups) {
-            if (group.type == C.TRACK_TYPE_VIDEO && group.length > 0) {
-                // get the first track of the group to identify aspect ratio
-                val format = group.getTrackFormat(0)
-                if (format.width > 0 || format.height > 0) {
-                    layout.updateAspectRatio(format)
+        player?.let {
+            if (it.videoSize.width > 0 || it.videoSize.height > 0) {
+                layout.updateVideoAspectRatio(it.videoSize)
+            }
+        } ?: run {
+            val groups = tracks.groups
+
+            for (group in groups) {
+                if (group.type == C.TRACK_TYPE_VIDEO && group.length > 0) {
+                    // get the first track of the group to identify aspect ratio
+                    val format = group.getTrackFormat(0)
+                    if (format.width > 0 || format.height > 0) {
+                        layout.updateAspectRatio(format)
+                    }
+                    return
                 }
-                return
             }
         }
+
         // no video tracks, in that case refresh shutterView visibility
         updateShutterViewVisibility()
     }

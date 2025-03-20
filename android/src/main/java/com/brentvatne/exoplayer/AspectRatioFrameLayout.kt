@@ -5,6 +5,7 @@ import android.widget.FrameLayout
 import androidx.media3.common.Format
 import com.brentvatne.common.api.ResizeMode
 import kotlin.math.abs
+import androidx.media3.common.VideoSize
 
 /**
  * A {@link FrameLayout} that resizes itself to match a specified aspect ratio.
@@ -101,6 +102,14 @@ class AspectRatioFrameLayout(context: Context) : FrameLayout(context) {
         when (format.rotationDegrees) {
             90, 270 -> videoAspectRatio = if (format.width == 0) 1f else (format.height * format.pixelWidthHeightRatio) / format.width
             else -> videoAspectRatio = if (format.height == 0) 1f else (format.width * format.pixelWidthHeightRatio) / format.height
+        }
+    }
+
+    fun updateVideoAspectRatio(videoSize: VideoSize) {
+        if (videoSize.width == 0 || videoSize.height == 0) {
+            videoAspectRatio = 0f
+        } else {
+            videoAspectRatio = (videoSize.width.toFloat() * videoSize.pixelWidthHeightRatio) / videoSize.height.toFloat()
         }
     }
 }
